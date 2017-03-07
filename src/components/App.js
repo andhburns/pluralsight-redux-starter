@@ -59,7 +59,15 @@ class App extends React.Component {
         url: img.url,
         description: img.description
       })
-    }).then(this.fetchLibrary());
+    }).then(result => result.json())
+    .then(image => {
+      let allimages = this.state.images.slice();
+      allimages.push(image);
+      this.setState({
+        images: allimages
+      });
+    });
+    // then(this.fetchLibrary());
   }
 
   removePic(img){
