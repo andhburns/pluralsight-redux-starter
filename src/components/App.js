@@ -23,7 +23,9 @@ class App extends React.Component {
     };
     this.addNewImage = this.addNewImage.bind(this);
     this.removePic = this.removePic.bind(this);
-    this.convertToShowGifs = this.convertToShowGifs.bind(this);
+    this.addToDatabase = this.addToDatabase.bind(this);
+    this.removeFromDatabase = this.removeFromDatabase.bind(this);
+    // this.convertToShowGifs = this.convertToShowGifs.bind(this);
   }
 
   convertToShowGifs(keyword, foundImages){
@@ -37,7 +39,23 @@ class App extends React.Component {
 
   addNewImage(img) {
     testGifs.push(img);
+    this.addToDatabase(img);
     this.setState({images: testGifs});
+  }
+
+  addToDatabase(img){
+    fetch('/gif', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        keyword: img.name,
+        url: img.url,
+        description: img.description
+      })
+    });
   }
 
   removePic(img){
@@ -47,15 +65,39 @@ class App extends React.Component {
         tempArray.splice(i,1);
       }
     }
+    this.removeFromDatabase(img);
     this.setState({images: tempArray});
+  }
+
+  removeFromDatabase(img){
+    fetch('/gif', {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        keyword: img.name,
+        url: img.url,
+        description: img.description
+      })
+    });
   }
 
   render() {
     return (
-      <div>
-        <SearchGiphy removePic={this.removePic} addNewImage={this.addNewImage}/>
-        <SearchGifs addNewImage={this.addNewImage}/>
-        <ShowGifs removePic={this.removePic} removeImage={this.addNewImage} gifs={this.state.images} addNewImage={this.addNewImage} noButton/>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-md-6">
+            <SearchGiphy removePic={this.removePic} addNewImage={this.addNewImage}/>
+          </div>
+          <div className="col-md-6">
+            <SearchGifs addNewImage={this.addNewImage}/>
+          </div>
+        </div>
+        <div className="col-md-12">
+          <ShowGifs removePic={this.removePic} removeImage={this.addNewImage} gifs={this.state.images} addNewImage={this.addNewImage} noButton/>
+        </div>
       </div>
     );
   }

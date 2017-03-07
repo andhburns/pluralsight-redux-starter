@@ -26,7 +26,7 @@ class SoloImageWithButton extends React.Component{
       <button onClick={this.removeOurImage} type="submit" className="btn btn-warning">Delete</button>
     );
     return(
-      <div key={this.props.img.name}>
+      <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12" key={this.props.img.name}>
         <img width="300" height="300" src={this.props.img.url}></img>
         {this.props.noButton ? "" : ourButton}
         {this.props.noDeleteButton ? "" : deleteButton}

@@ -39,6 +39,15 @@ router.route('/gif')
         res.json(gifs);
       }
     });
+  })
+  .delete(function(req, res, next){
+    Gif.remove({url: req.body.url}, function(err, gif){
+      if(err){
+        return next(err);
+      } else {
+        res.json({title: 'gif was successfully deleted!'});
+      }
+    });
   });
 
 module.exports = router;
