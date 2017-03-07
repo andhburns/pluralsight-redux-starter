@@ -11,25 +11,28 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-
-    let originalfetch = fetch(`http://localhost:3000/gif`)
-    .then(result => result.json())
-    .then(data => this.setState({
-      images: this.convertToShowGifs(this.state.keyword, data)}));
-
     this.state = {
-      // testGifs: [],
       images: []
     };
+
+    this.fetchLibrary();
+
     this.addNewImage = this.addNewImage.bind(this);
     this.removePic = this.removePic.bind(this);
     this.addToDatabase = this.addToDatabase.bind(this);
     this.removeFromDatabase = this.removeFromDatabase.bind(this);
-    // this.convertToShowGifs = this.convertToShowGifs.bind(this);
+  }
+
+  fetchLibrary(){
+    let originalfetch = fetch(`/gif`)
+    .then(result => result.json())
+    .then(data => this.setState({
+      images: this.convertToShowGifs(this.state.keyword, data)}));
   }
 
   convertToShowGifs(keyword, foundImages){
     return foundImages.map(image => ({
+      _id: image._id,
       name: image.url,
       keyword: image.keyword,
       url: image.url,
@@ -51,36 +54,32 @@ class App extends React.Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
+        _id: img._id,
         keyword: img.name,
         url: img.url,
         description: img.description
       })
-    });
+    }).then(this.fetchLibrary());
   }
 
   removePic(img){
     let tempArray = this.state.images;
-    for(let i=0; i<tempArray.length ; i++){
-      if(tempArray[i].name == img.name){
-        tempArray.splice(i,1);
+    let newArray = tempArray.filter(x => {
+      if(x.name !== img.name){
+        return x;
       }
-    }
+    });
     this.removeFromDatabase(img);
-    this.setState({images: tempArray});
+    this.setState({images: newArray});
   }
 
   removeFromDatabase(img){
-    fetch('/gif', {
+    fetch('/gif/'+img._id, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        keyword: img.name,
-        url: img.url,
-        description: img.description
-      })
+      }
     });
   }
 

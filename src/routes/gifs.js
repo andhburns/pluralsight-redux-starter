@@ -18,8 +18,6 @@ router.route('/gif')
     gif.keyword = req.body.keyword;
     gif.url = req.body.url;
     gif.description = req.body.description;
-    // todo.blah = req.body.blah;
-    // console.log(req.body);
 
     gif.save(function(err, gif){
       if(err){
@@ -34,14 +32,13 @@ router.route('/gif')
       if(err){
         return next(err);
       } else {
-        // console.log(gifs);
-        //This line controls what you send back to the client (web browser)
         res.json(gifs);
       }
     });
-  })
+  });
+  router.route('/gif/:giphy_id')
   .delete(function(req, res, next){
-    Gif.remove({url: req.body.url}, function(err, gif){
+    Gif.remove({_id: req.params.giphy_id}, function(err, gif){
       if(err){
         return next(err);
       } else {
