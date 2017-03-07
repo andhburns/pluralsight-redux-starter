@@ -3,24 +3,36 @@ import ShowGifs from './ShowGifs';
 import SearchGifs from './SearchGifs';
 import SearchGiphy from './SearchGiphy';
 
-const testGifs = [
-  {
-    name: "cat",
-    description: "grumpy cat",
-    url: "https://media.giphy.com/media/gSotjAQJmPTJm/giphy.gif"
-  }
-];
+let testGifs = [];
 
 class App extends React.Component {
+
 
   constructor(props) {
     super(props);
 
+
+    let originalfetch = fetch(`http://localhost:3000/gif`)
+    .then(result => result.json())
+    .then(data => this.setState({
+      images: this.convertToShowGifs(this.state.keyword, data)}));
+
     this.state = {
-      images: testGifs
+      // testGifs: [],
+      images: []
     };
     this.addNewImage = this.addNewImage.bind(this);
     this.removePic = this.removePic.bind(this);
+    this.convertToShowGifs = this.convertToShowGifs.bind(this);
+  }
+
+  convertToShowGifs(keyword, foundImages){
+    return foundImages.map(image => ({
+      name: image.url,
+      keyword: image.keyword,
+      url: image.url,
+      description: image.description
+    }));
   }
 
   addNewImage(img) {
