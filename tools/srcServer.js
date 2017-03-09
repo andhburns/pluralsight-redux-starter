@@ -6,11 +6,21 @@ import open from 'open';
 import uriUtil from 'mongodb-uri';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import configAuth from './configAuth'; // get our config file
+
 
 mongoose.Promise = global.Promise;
 
 const mongodbUri = process.env.MONGODB_URI || 'mongodb://localhost/gif';
 const mongooseUri = uriUtil.formatMongoose(mongodbUri);
+
+
+const morgan = require('morgan');
+
+const jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
+const User   = require('../src/models/user'); // get our mongoose model
+
+
 const options = {
   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
   replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
@@ -27,11 +37,14 @@ const app = express();
 const router = express.Router();
 const compiler = webpack(config);
 
+app.set('superSecret', configAuth.secret);
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//This change caused the browser to output html to the user because gifs.js sets
-//the content type to json and that cascaded down to the homepage route below (line 44).
+
+app.use(morgan('dev'));
+
 app.use('/', gifRoutes);
 
 app.use(require('webpack-dev-middleware')(compiler, {

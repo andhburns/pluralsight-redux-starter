@@ -14,7 +14,9 @@ export default function ShowGifs(props) {
   // console.log(props.gifs);
   let images = props.gifs.map(function(img) {
     return (
-      <SoloImageWithButton removePic={props.removePic} key={img.name} img={img} removeImage={props.removeImage} addNewImage={props.addNewImage} noButton={props.noButton} noDeleteButton={props.noDeleteButton}/>
+      <SoloImageWithButton removePic={props.removePic} key={img.name} img={img}
+        removeImage={props.removeImage} addNewImage={props.addNewImage}
+        noButton={props.noButton} noDeleteButton={props.noDeleteButton}/>
     );
   });
   return (

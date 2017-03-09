@@ -3,6 +3,7 @@ import ShowGifs from './ShowGifs';
 import SearchGifs from './SearchGifs';
 import SearchGiphy from './SearchGiphy';
 import { Link } from 'react-router';
+import Navigation from './Navigation';
 
 let testGifs = [];
 
@@ -95,11 +96,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="container-fluid">
-        <div>
-          <Link to="/ShowGifs">ShowGifs</Link>
-          <Link to="/SearchGiphy">SearchGiphy</Link>
-          <Link to="/SearchGifs">SearchGifs</Link>
-        </div>
+      <Navigation />
          {this.props.children}
         <div className="col-md-12">
           <ShowGifs removePic={this.removePic} removeImage={this.addNewImage} gifs={this.state.images} addNewImage={this.addNewImage} noButton/>
@@ -110,7 +107,7 @@ class App extends React.Component {
 }
 
 export default App;
-// 
+//
 // <div className="row">
 //   <div className="col-md-6">
 //     <SearchGiphy removePic={this.removePic} addNewImage={this.addNewImage}/>
