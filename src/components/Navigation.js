@@ -17,6 +17,7 @@ export default class Home extends React.Component {
             <li><Link to="/SearchGiphy">Search-Giphy</Link></li>
             <li><Link to="/SearchGifs">Search-Gifs</Link></li>
             <li><Link to="/ShowGifs">Show-Gifs</Link></li>
+            <li><Link to="/Login">Login</Link></li>
           </ul>
         </div>
       </nav>

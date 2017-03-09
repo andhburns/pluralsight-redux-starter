@@ -120,6 +120,8 @@ apiRoutes.post('/newUser', function(req, res) {
     });
   });
 
+app.use('/api', apiRoutes);  
+
 app.listen(port, function(err) {
   if (err) {
     console.log(err);
