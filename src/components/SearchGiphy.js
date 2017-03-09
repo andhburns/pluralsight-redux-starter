@@ -103,7 +103,6 @@ class SearchGiphy extends React.Component{
       <div>
         <form method="" role="form">
             <legend>Search Giphy</legend>
-            <div>thisdiv</div>
             <div className="form-group">
               <input onChange={this.handleKeywordChange} value={this.state.keyword} type="text" className="form-control" id="keyword" placeholder="keyword"/>
               <input onChange={this.handleLimitChange} value={this.state.limit} type="number" className="form-control" id="limit" placeholder="limit"/>
