@@ -7,6 +7,7 @@ import uriUtil from 'mongodb-uri';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import configAuth from './configAuth'; // get our config file
+import hash from 'password-hash';
 
 
 mongoose.Promise = global.Promise;
@@ -60,6 +61,64 @@ app.get('/', function(req, res) {
   res.setHeader('Content-Type', 'text/html');
   res.sendFile(path.join( __dirname, '../src/index.html'));
 });
+
+//api routes ///// ////// ///////
+
+let apiRoutes = express.Router();
+
+// todo: route to authenticate a user (POST http://localhost:8080/api/authenticate)
+apiRoutes.post('/authenticate', function(req, res) {
+
+  // find the user
+  User.findOne({
+    name: req.body.name
+  }, function(err, user) {
+
+    if (err) throw err;
+
+    if (!user) {
+      res.json({ success: false, message: 'Authentication failed. User not found.' });
+    } else if (user) {
+
+      // check if password matches
+      if (!hash.verify(req.body.password, user.password)) {
+        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+      } else {
+
+        // if user is found and password is right
+        // create a token
+        let token = jwt.sign(user, app.get('superSecret'), {
+          expiresIn: 1440 // expires in 24 hours
+        });
+
+        // return the information including token as JSON
+        res.json({
+          success: true,
+          message: 'Enjoy your token!',
+          token: token
+        });
+      }
+
+    }
+
+  });
+});
+
+apiRoutes.post('/newUser', function(req, res) {
+  let user = new User();
+
+    user.name = req.body.name;
+    user.password = hash.generate(req.body.password);
+    user.admin = req.body.admin;
+
+    user.save(function(err, user){
+      if(err){
+        res.send(err);
+      } else {
+        res.json(user);
+      }
+    });
+  });
 
 app.listen(port, function(err) {
   if (err) {
