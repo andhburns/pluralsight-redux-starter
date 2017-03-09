@@ -2,6 +2,7 @@ import React from 'react';
 import ShowGifs from './ShowGifs';
 import SearchGifs from './SearchGifs';
 import SearchGiphy from './SearchGiphy';
+import { Link } from 'react-router';
 
 let testGifs = [];
 
@@ -94,14 +95,12 @@ class App extends React.Component {
   render() {
     return (
       <div className="container-fluid">
-        <div className="row">
-          <div className="col-md-6">
-            <SearchGiphy removePic={this.removePic} addNewImage={this.addNewImage}/>
-          </div>
-          <div className="col-md-6">
-            <SearchGifs addNewImage={this.addNewImage}/>
-          </div>
+        <div>
+          <Link to="/ShowGifs">ShowGifs</Link>
+          <Link to="/SearchGiphy">SearchGiphy</Link>
+          <Link to="/SearchGifs">SearchGifs</Link>
         </div>
+         {this.props.children}
         <div className="col-md-12">
           <ShowGifs removePic={this.removePic} removeImage={this.addNewImage} gifs={this.state.images} addNewImage={this.addNewImage} noButton/>
         </div>
@@ -111,3 +110,12 @@ class App extends React.Component {
 }
 
 export default App;
+// 
+// <div className="row">
+//   <div className="col-md-6">
+//     <SearchGiphy removePic={this.removePic} addNewImage={this.addNewImage}/>
+//   </div>
+//   <div className="col-md-6">
+//     <SearchGifs addNewImage={this.addNewImage}/>
+//   </div>
+// </div>

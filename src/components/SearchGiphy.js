@@ -2,6 +2,8 @@ import React from 'react';
 import math from 'mathjs';
 import ShowGifs from "./ShowGifs";
 
+let testGifs = [];
+
 class SearchGiphy extends React.Component{
   constructor(props) {
     super(props);
@@ -17,6 +19,8 @@ class SearchGiphy extends React.Component{
     this.handleLimitChange = this.handleLimitChange.bind(this);
     this.handleRandomChange = this.handleRandomChange.bind(this);
     this.removeImage = this.removeImage.bind(this);
+    this.addToDatabase = this.addToDatabase.bind(this);
+    this.addNewImage = this.addNewImage.bind(this);
   }
 
   handleSubmit(e) {
@@ -64,6 +68,36 @@ class SearchGiphy extends React.Component{
     this.setState({random: newrandom});
   }
 
+  addNewImage(img) {
+    testGifs.push(img);
+    this.addToDatabase(img);
+    this.setState({images: testGifs});
+  }
+
+  addToDatabase(img){
+    fetch('/gif', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        _id: img._id,
+        keyword: img.name,
+        url: img.url,
+        description: img.description
+      })
+    }).then(result => result.json())
+    .then(image => {
+      let allimages = this.state.images.slice();
+      allimages.push(image);
+      this.setState({
+        images: allimages
+      });
+    });
+    // then(this.fetchLibrary());
+  }
+
   render() {
     return (
       <div>
@@ -77,7 +111,7 @@ class SearchGiphy extends React.Component{
             </div>
             <button onClick={this.handleSubmit} type="submit" className="btn btn-primary">Submit</button>
          </form>
-         <ShowGifs removePic={this.props.removePic} removeImage={this.removeImage} addNewImage={this.props.addNewImage} gifs={this.state.foundImages} noButton={false} noDeleteButton/>
+         <ShowGifs removePic={this.props.removePic} removeImage={this.removeImage} addNewImage={this.addNewImage} gifs={this.state.foundImages} noButton={false} noDeleteButton/>
        </div>
     );
   }
@@ -85,7 +119,8 @@ class SearchGiphy extends React.Component{
 
 SearchGiphy.propTypes = {
   addNewImage: React.PropTypes.func.isRequired,
-  removePic: React.PropTypes.func
+  removePic: React.PropTypes.func,
+  addToDatabase: React.PropTypes.func
 };
 
 export default SearchGiphy;
