@@ -7,6 +7,8 @@ import ShowGifs from './components/ShowGifs';
 import SearchGiphy from './components/SearchGiphy';
 import SearchGifs from './components/SearchGifs';
 import CreateAccount from './components/CreateAccount';
+import Login from './components/Login';
+import Navigation from './components/Navigation';
 
 
 
@@ -20,6 +22,7 @@ render((
       <Route path="/SearchGiphy" component={SearchGiphy}/>
       <Route path="/SearchGifs" component={SearchGifs}/>
       <Route path="/CreateAccount" component={CreateAccount}/>
+      <Route path="/Login" component={Login}/>
     </Route>
   </Router>
 ), document.getElementById('app'));

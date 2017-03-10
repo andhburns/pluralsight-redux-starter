@@ -1,18 +1,18 @@
+
 import React from 'react';
 
 
 
-export default class CreateAccount extends React.Component {
+export default class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       username: "",
-      password: "",
-      registered: false
+      password: ""
     };
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.addUserToDatabase = this.addUserToDatabase.bind(this);
+    this.loginHandler = this.loginHandler.bind(this);
   }
 
   handleUsernameChange(e) {
@@ -23,9 +23,8 @@ export default class CreateAccount extends React.Component {
     this.setState({password: e.target.value});
   }
 
-  addUserToDatabase(e){
-    e.preventDefault();
-    fetch('/api/user', {
+  loginHandler(e){
+    fetch('/api/authenticate', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -35,17 +34,18 @@ export default class CreateAccount extends React.Component {
         name: this.state.username,
         password: this.state.password
       })
-    });
-    this.setState({registered: true});
+    }).then(result => result.json());
+
+    // .then(function(json) {
+    //   console.log(document.cookie);
+    //   document.cookie = "token=" + json.token;
+    // });
   }
+  console.log(result);
 
 
   render() {
-    if(this.state.registered) {
-      return (
-        <h1>Welcome!</h1>
-      );
-    }
+
     return (
       <div>
         <form>
@@ -53,7 +53,7 @@ export default class CreateAccount extends React.Component {
           <input onChange={this.handleUsernameChange} value={this.state.username} type="text" name="username"/><br/>
           Password:<br/>
           <input onChange={this.handlePasswordChange} value={this.state.password} type="text" name="password"/><br/>
-          <button onClick={this.addUserToDatabase} type="submit" className="btn btn-primary">Register</button>
+          <button onClick={this.loginHandler} type="submit" className="btn btn-primary">Login</button>
         </form>
       </div>
     );
