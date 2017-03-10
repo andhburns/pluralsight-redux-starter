@@ -11,6 +11,7 @@ import Login from './components/Login';
 import Navigation from './components/Navigation';
 import { Provider } from 'mobx-react';
 import ImageStore from './stores/ImageStore';
+import ShowGifsWrapper from './components/ShowGifsWrapper';
 
 const imageStore = new ImageStore();
 
@@ -21,7 +22,7 @@ render((
   <Provider imageStore={imageStore}>
     <Router history={hashHistory}>
       <Route path="/" component={App}>
-        <Route path="/ShowGifs" component={ShowGifs}/>
+        <Route path="/ShowGifs" component={ShowGifsWrapper}/>
         <Route path="/SearchGiphy" component={SearchGiphy}/>
         <Route path="/SearchGifs" component={SearchGifs}/>
         <Route path="/CreateAccount" component={CreateAccount}/>

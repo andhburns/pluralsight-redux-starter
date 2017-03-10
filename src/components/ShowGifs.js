@@ -2,7 +2,7 @@ import React from 'react';
 import SoloImageWithButton from './SoloImageWithButton';
 
 ShowGifs.propTypes = {
-  gifs: React.PropTypes.array,
+  gifs: React.PropTypes.array.isRequired,
   addNewImage: React.PropTypes.func.isRequired,
   noButton: React.PropTypes.bool,
   noDeleteButton: React.PropTypes.bool,

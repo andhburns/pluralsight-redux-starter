@@ -7,18 +7,29 @@ export default class ImageStore {
     });
     this.addNewImage = this.addNewImage.bind(this);
     this.setImages = this.setImages.bind(this);
-    // this.fetchLibary = this.fetchLibary.bind(this);
+    // this.fetchLibrary = this.fetchLibrary.bind(this);
+    // this.addToDatabase = this.addToDatabase.bind(this);
   }
 
-  // fetchLibrary(){
-  //   let originalfetch = fetch(`/gif`)
-  //   .then(result => result.json())
-  //   .then(data => {
-  //     console.log('got images', data);
-  //     this.props.imageStore.setImages(
-  //       this.convertToShowGifs(data));
-  //     });
-  // }
+  fetchLibrary(){
+    let originalfetch = fetch(`/gif`)
+    .then(result => result.json())
+    .then(images => {
+      console.log('got images', images);
+      this.setImages(
+        this.convertToShowGifs(images));
+      });
+  }
+
+  convertToShowGifs(foundImages){
+    return foundImages.map(image => ({
+      _id: image._id,
+      name: image.url,
+      keyword: image.keyword,
+      url: image.url,
+      description: image.description
+    }));
+  }
 
   setImages(images) {
     this.images = images;

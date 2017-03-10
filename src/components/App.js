@@ -13,7 +13,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.fetchLibrary();
+    this.props.imageStore.fetchLibrary();
 
     this.removePic = this.removePic.bind(this);
     this.removeFromDatabase = this.removeFromDatabase.bind(this);
@@ -26,25 +26,11 @@ class App extends React.Component {
 //4. clean up duplicate code and use imageStore instead.
 // 5. make a userStore and use it.
 
-  fetchLibrary(){
-    let originalfetch = fetch(`/gif`)
-    .then(result => result.json())
-    .then(data => {
-      console.log('got images', data);
-      this.props.imageStore.setImages(
-        this.convertToShowGifs(data));
-      });
+  conponentDidMount() {
+    this.props.imageStore.fetchLibrary();
   }
 
-  convertToShowGifs(foundImages){
-    return foundImages.map(image => ({
-      _id: image._id,
-      name: image.url,
-      keyword: image.keyword,
-      url: image.url,
-      description: image.description
-    }));
-  }
+
 
   removePic(img){
     // let tempArray = this.state.images;
@@ -72,10 +58,7 @@ class App extends React.Component {
       <div className="container-fluid">
       <Navigation />
          {this.props.children}
-        <div className="col-md-12">
-          <ShowGifs removePic={this.removePic} removeImage={this.props.imageStore.addNewImage}
-            gifs={this.props.imageStore.images} addNewImage={this.props.imageStore.addNewImage} noButton/>
-        </div>
+      
       </div>
     );
   }
