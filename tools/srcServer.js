@@ -104,23 +104,23 @@ apiRoutes.post('/authenticate', function(req, res) {
   });
 });
 
-apiRoutes.post('/newUser', function(req, res) {
+apiRoutes.post('/user', function(req, res) {
   let user = new User();
 
-    user.name = req.body.name;
-    user.password = hash.generate(req.body.password);
-    user.admin = req.body.admin;
+  user.name = req.body.name;
+  user.password = hash.generate(req.body.password);
+  user.admin = req.body.admin;
 
-    user.save(function(err, user){
-      if(err){
-        res.send(err);
-      } else {
-        res.json(user);
-      }
-    });
+  user.save(function(err, user){
+    if(err){
+      res.send(err);
+    } else {
+      res.json(user);
+    }
   });
+});
 
-app.use('/api', apiRoutes);  
+app.use('/api', apiRoutes);
 
 app.listen(port, function(err) {
   if (err) {
