@@ -4,8 +4,8 @@ import SearchGifs from './SearchGifs';
 import SearchGiphy from './SearchGiphy';
 import { Link } from 'react-router';
 import Navigation from './Navigation';
+import { observer, inject } from 'mobx-react';
 
-let testGifs = [];
 
 class App extends React.Component {
 
@@ -13,26 +13,30 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      images: []
-    };
-
     this.fetchLibrary();
 
-    this.addNewImage = this.addNewImage.bind(this);
     this.removePic = this.removePic.bind(this);
-    this.addToDatabase = this.addToDatabase.bind(this);
     this.removeFromDatabase = this.removeFromDatabase.bind(this);
   }
+
+// 1. Move the fetch library function into ImageStore
+  // everything that calls fetch library needs to be this.props.imageStore
+// 2.  call fetch library in conponentDidMount
+// 3. Add a delete image in the imageStore instead of removePic
+//4. clean up duplicate code and use imageStore instead.
+// 5. make a userStore and use it.
 
   fetchLibrary(){
     let originalfetch = fetch(`/gif`)
     .then(result => result.json())
-    .then(data => this.setState({
-      images: this.convertToShowGifs(this.state.keyword, data)}));
+    .then(data => {
+      console.log('got images', data);
+      this.props.imageStore.setImages(
+        this.convertToShowGifs(data));
+      });
   }
 
-  convertToShowGifs(keyword, foundImages){
+  convertToShowGifs(foundImages){
     return foundImages.map(image => ({
       _id: image._id,
       name: image.url,
@@ -42,45 +46,15 @@ class App extends React.Component {
     }));
   }
 
-  addNewImage(img) {
-    testGifs.push(img);
-    this.addToDatabase(img);
-    this.setState({images: testGifs});
-  }
-
-  addToDatabase(img){
-    fetch('/gif', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        _id: img._id,
-        keyword: img.name,
-        url: img.url,
-        description: img.description
-      })
-    }).then(result => result.json())
-    .then(image => {
-      let allimages = this.state.images.slice();
-      allimages.push(image);
-      this.setState({
-        images: allimages
-      });
-    });
-    // then(this.fetchLibrary());
-  }
-
   removePic(img){
-    let tempArray = this.state.images;
-    let newArray = tempArray.filter(x => {
-      if(x.name !== img.name){
-        return x;
-      }
-    });
-    this.removeFromDatabase(img);
-    this.setState({images: newArray});
+    // let tempArray = this.state.images;
+    // let newArray = tempArray.filter(x => {
+    //   if(x.name !== img.name){
+    //     return x;
+    //   }
+    // });
+    // this.removeFromDatabase(img);
+    // this.setState({images: newArray});
   }
 
   removeFromDatabase(img){
@@ -99,20 +73,17 @@ class App extends React.Component {
       <Navigation />
          {this.props.children}
         <div className="col-md-12">
-          <ShowGifs removePic={this.removePic} removeImage={this.addNewImage} gifs={this.state.images} addNewImage={this.addNewImage} noButton/>
+          <ShowGifs removePic={this.removePic} removeImage={this.props.imageStore.addNewImage}
+            gifs={this.props.imageStore.images} addNewImage={this.props.imageStore.addNewImage} noButton/>
         </div>
       </div>
     );
   }
 }
 
-export default App;
-//
-// <div className="row">
-//   <div className="col-md-6">
-//     <SearchGiphy removePic={this.removePic} addNewImage={this.addNewImage}/>
-//   </div>
-//   <div className="col-md-6">
-//     <SearchGifs addNewImage={this.addNewImage}/>
-//   </div>
-// </div>
+App.propTypes = {
+  children: React.PropTypes.object,
+  imageStore: React.PropTypes.object
+};
+
+export default inject("imageStore") (observer(App));
