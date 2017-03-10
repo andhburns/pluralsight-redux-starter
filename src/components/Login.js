@@ -8,7 +8,8 @@ export default class Login extends React.Component {
     super(props);
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      loggedIn: false
     };
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -34,18 +35,20 @@ export default class Login extends React.Component {
         name: this.state.username,
         password: this.state.password
       })
-    }).then(result => result.json());
-
-    // .then(function(json) {
-    //   console.log(document.cookie);
-    //   document.cookie = "token=" + json.token;
-    // });
+    }).then(result => result.json())
+    .then(function(json) {
+      document.cookie = "token=" + json.token;
+      console.log(json.token)
+    });
+    this.setState({loggedIn: true});
   }
-  console.log(result);
-
 
   render() {
-
+    if(this.state.loggedIn) {
+      return (
+        <h1>You are logged on!</h1>
+      );
+    }
     return (
       <div>
         <form>
