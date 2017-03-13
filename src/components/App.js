@@ -5,6 +5,7 @@ import SearchGiphy from './SearchGiphy';
 import { Link } from 'react-router';
 import Navigation from './Navigation';
 import { observer, inject } from 'mobx-react';
+import Welcome from './Welcome';
 
 
 class App extends React.Component {
@@ -58,7 +59,6 @@ class App extends React.Component {
       <div className="container-fluid">
       <Navigation />
          {this.props.children}
-      
       </div>
     );
   }

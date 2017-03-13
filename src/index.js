@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import App from './components/App';
-import { Router, Route, hashHistory } from 'react-router';
+import { Router, Route, hashHistory, IndexRoute } from 'react-router';
 import { render } from 'react-dom';
 import ShowGifs from './components/ShowGifs';
 import SearchGiphy from './components/SearchGiphy';
@@ -11,17 +11,21 @@ import Login from './components/Login';
 import Navigation from './components/Navigation';
 import { Provider } from 'mobx-react';
 import ImageStore from './stores/ImageStore';
+import UserStore from './stores/UserStore';
 import ShowGifsWrapper from './components/ShowGifsWrapper';
+import Welcome from './components/Welcome';
 
 const imageStore = new ImageStore();
+const userStore = new UserStore();
 
 
 
 
 render((
-  <Provider imageStore={imageStore}>
+  <Provider imageStore={imageStore} userStore={userStore}>
     <Router history={hashHistory}>
       <Route path="/" component={App}>
+        <IndexRoute component={Welcome}/>
         <Route path="/ShowGifs" component={ShowGifsWrapper}/>
         <Route path="/SearchGiphy" component={SearchGiphy}/>
         <Route path="/SearchGifs" component={SearchGifs}/>

@@ -66,6 +66,8 @@ app.get('/', function(req, res) {
 
 let apiRoutes = express.Router();
 
+app.use('/api', apiRoutes);
+
 // todo: route to authenticate a user (POST http://localhost:8080/api/authenticate)
 apiRoutes.post('/authenticate', function(req, res) {
 
@@ -95,7 +97,9 @@ apiRoutes.post('/authenticate', function(req, res) {
         res.json({
           success: true,
           message: 'Enjoy your token!',
-          token: token
+          token: token,
+          admin: user.admin,
+          _id: user._id
         });
       }
 
@@ -120,7 +124,28 @@ apiRoutes.post('/user', function(req, res) {
   });
 });
 
-app.use('/api', apiRoutes);
+app.use(function (req, res, next) {
+  let token = req.body.token || req.query.token || req.headers['x-access-token'];
+  if (token) {
+    jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.'});
+      }
+      else {
+        req.decoded = decoded;
+        next();
+      }
+    });
+  }
+  else {
+    return res.status(403).send({
+      success: false,
+      message: 'No token provided.'
+    });
+  }
+});
+
+
 
 app.listen(port, function(err) {
   if (err) {

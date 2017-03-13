@@ -3,12 +3,13 @@ import { extendObservable } from 'mobx';
 export default class ImageStore {
   constructor() {
     extendObservable(this, {
-      images: []
+      images: [],
+      searchresults: []
     });
     this.addNewImage = this.addNewImage.bind(this);
     this.setImages = this.setImages.bind(this);
-    // this.fetchLibrary = this.fetchLibrary.bind(this);
-    // this.addToDatabase = this.addToDatabase.bind(this);
+    this.fetchLibrary = this.fetchLibrary.bind(this);
+    this.addToDatabase = this.addToDatabase.bind(this);
   }
 
   fetchLibrary(){

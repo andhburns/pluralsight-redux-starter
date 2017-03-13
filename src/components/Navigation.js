@@ -21,7 +21,6 @@ export default class Navigation extends React.Component {
             <li><Link to="/ShowGifs">Show-Gifs</Link></li>
             <li><Link to="/CreateAccount">Create Account</Link></li>
             <li><Link to="/Login">Login</Link></li>
-
           </ul>
         </div>
       </nav>

@@ -1,15 +1,16 @@
 
 import React from 'react';
+import { observer, inject } from 'mobx-react';
+import { Link } from 'react-router';
 
 
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       username: "",
-      password: "",
-      loggedIn: false
+      password: ""
     };
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -25,26 +26,16 @@ export default class Login extends React.Component {
   }
 
   loginHandler(e){
-    fetch('/api/authenticate', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: this.state.username,
-        password: this.state.password
-      })
-    }).then(result => result.json())
-    .then(function(json) {
-      document.cookie = "token=" + json.token;
-      console.log(json.token)
-    });
-    this.setState({loggedIn: true});
+    this.props.userStore.authenticateUser(this.state);
   }
 
+
+
+
+
+
   render() {
-    if(this.state.loggedIn) {
+    if(this.props.userStore.loggedIn) {
       return (
         <h1>You are logged on!</h1>
       );
@@ -62,3 +53,9 @@ export default class Login extends React.Component {
     );
     }
   }
+
+  Login.propTypes = {
+    userStore: React.PropTypes.object
+  };
+
+  export default inject("userStore")(observer(Login));
