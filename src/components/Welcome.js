@@ -11,7 +11,6 @@ class Welcome extends React.Component {
   }
 
 createWelcomeComponent() {
-  console.log(this.props.userStore.name)
   if(this.props.userStore.loggedIn) {
     return (
       <h1>You are logged on, start searching</h1>

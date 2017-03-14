@@ -46,7 +46,6 @@ export default class ImageStore {
   }
 
   removeFromDatabase(img){
-    console.log(img._id);
     fetch('/gif/'+img._id, {
       method: 'DELETE',
       headers: {
@@ -108,7 +107,6 @@ export default class ImageStore {
     }).then(result => result.json()).then(res => {img._id = res._id;})
     .then(this.images.push(img))
     .then(image => {
-      console.log("image added to DB", image);
     });
   }
 

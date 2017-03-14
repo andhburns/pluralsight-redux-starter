@@ -11,9 +11,8 @@ export default class UserStore {
     });
     this.addUserToDatabase = this.addUserToDatabase.bind(this);
     this.authenticateUser = this.authenticateUser.bind(this);
-
+    this.logUserOut = this.logUserOut.bind(this);
   }
-
 
     logUserOut() {
       this.token = "";

@@ -34,6 +34,7 @@ render((
         <Route path="/SearchGifs" component={SearchGifs}/>
         <Route path="/CreateAccount" component={CreateAccount}/>
         <Route path="/Login" component={Login}/>
+        <Route path="/Logout" component={Login}/>
       </Route>
     </Router>
   </Provider>

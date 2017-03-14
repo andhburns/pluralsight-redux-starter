@@ -25,7 +25,7 @@ userName() {
 
 logInLogOut() {
   if(this.props.userStore.loggedIn) {
-    return (<li><Link to="/Logout">Logout</Link></li>);
+    return (<li onClick={this.props.userStore.logUserOut}><Link to="/Logout">Logout</Link></li>);
   } else {
     return <li><Link to="/Login">Login</Link></li>;
   }
