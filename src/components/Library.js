@@ -15,7 +15,7 @@ class Library extends React.Component {
           return (
             <SoloImageWithButton removePic={this.props.removePic} key={img.name} img={img}
               removeImage={this.props.removeImage} addNewImage={this.props.addNewImage}
-              noButton={true} noDeleteButton={false}/>
+              noButton noDeleteButton={false}/>
           );
         },this)
       );
@@ -26,7 +26,7 @@ class Library extends React.Component {
           return (
             <SoloImageWithButton removePic={this.props.removePic} key={img.name} img={img}
               removeImage={this.props.removeImage} addNewImage={this.props.addNewImage}
-              noButton={true} noDeleteButton={true}/>
+              noButton noDeleteButton/>
           );
         },this)
       );
@@ -47,12 +47,11 @@ class Library extends React.Component {
 
 
 Library.propTypes = {
-  gifs: React.PropTypes.array.isRequired,
-  addNewImage: React.PropTypes.func.isRequired,
+  addNewImage: React.PropTypes.func,
   noButton: React.PropTypes.bool,
   noDeleteButton: React.PropTypes.bool,
-  removeImage: React.PropTypes.func.isRequired,
-  removePic: React.PropTypes.func.isRequired,
+  removeImage: React.PropTypes.func,
+  removePic: React.PropTypes.func,
   userStore: React.PropTypes.object,
   imageStore: React.PropTypes.object
 };

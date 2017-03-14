@@ -19,7 +19,7 @@ userName() {
     return <li><Link to="">{this.props.userStore.username}</Link></li>;
   }
   else {
-    return "";
+    return <div></div>;
   }
 }
 

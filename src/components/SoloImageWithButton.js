@@ -9,9 +9,10 @@ class SoloImageWithButton extends React.Component{
     this.removeOurImage = this.removeOurImage.bind(this);
   }
 
-  addOurImage() {
-    this.props.addNewImage(this.props.img);
-    this.props.removeImage(this.props.img);
+  addOurImage(e) {
+    e.preventDefault();
+    this.props.imageStore.addNewImage(this.props.img);
+    this.props.imageStore.removeImage(this.props.img);
   }
 
   removeOurImage() {

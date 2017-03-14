@@ -4,6 +4,7 @@ import ShowGifs from "./ShowGifs";
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
+import { Button } from "react-bootstrap";
 
 
 let testGifs = [];
@@ -34,13 +35,7 @@ class SearchGiphy extends React.Component{
     }else{
         this.setState({offset: '0'});
     }
-    e.preventDefault();
-    fetch(`http://api.giphy.com/v1/gifs/search?q=${this.state.keyword}&api_key=dc6zaTOxFJmzC&limit=${this.state.limit}&offset=${this.state.offset}`)
-      .then(result => result.json())
-      .then(data => {
-        this.props.imageStore.searchresults = this.convertToShowGifs(this.state.keyword, data.data);});
-
-        this.props.imageStore.returnSearch(this.state.keyword, data.data);
+        this.props.imageStore.newGiphySearch(this.state.keyword, this.state.limit, this.state.offset);
   }
 
 
@@ -102,15 +97,14 @@ class SearchGiphy extends React.Component{
   render() {
     return (
       <div>
-        <form method="" role="form">
+        <form>
             <legend>Search Giphy</legend>
             <div className="form-group">
               <input onChange={this.handleKeywordChange} value={this.state.keyword} type="text" className="form-control" id="keyword" placeholder="keyword"/>
               <input onChange={this.handleLimitChange} value={this.state.limit} type="number" className="form-control" id="limit" placeholder="limit"/>
               <input onChange={this.handleRandomChange} value={this.state.random} type="checkbox"j id="random"/> Randomize
             </div>
-            <button onClick={this.handleSubmit} type="submit" className="btn btn-primary">Submit</button>
-            <Link to ="/SearchResults">TEst</Link>
+            <Link to="/SearchResults"><Button onClick={this.handleSubmit} type="submit" className="btn btn-primary">Submit</Button></Link>
          </form>
          <div>{this.props.children}</div>
        </div>

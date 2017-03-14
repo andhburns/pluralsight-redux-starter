@@ -2,6 +2,7 @@ import React from 'react';
 import SoloImageWithButton from './SoloImageWithButton';
 import { observer, inject } from 'mobx-react';
 
+
 class ShowGifs extends React.Component {
   constructor() {
     super();
@@ -10,23 +11,22 @@ class ShowGifs extends React.Component {
   whenLoggedIn() {
     let images;
     if(this.props.userStore.loggedIn) {
-      return (
-        images = this.props.userStore.searchresults.map(function(img) {
+      images = this.props.imageStore.searchresults.map(function(img) {
           return (
             <SoloImageWithButton removePic={this.props.removePic} key={img.name} img={img}
               removeImage={this.props.removeImage} addNewImage={this.props.addNewImage}
-              noButton={false} noDeleteButton={true}/>
+              noButton={false} noDeleteButton/>
           );
-        },this)
-      );
+        },this);
+        return images;
     }
     else{
       return (
-        images = this.props.userStore.searchresults.map(function(img) {
+        images = this.props.imageStore.searchresults.map(function(img) {
           return (
             <SoloImageWithButton removePic={this.props.removePic} key={img.name} img={img}
               removeImage={this.props.removeImage} addNewImage={this.props.addNewImage}
-              noButton={true} noDeleteButton={true}/>
+              noButton noDeleteButton/>
           );
         },this)
       );
@@ -43,16 +43,13 @@ class ShowGifs extends React.Component {
 }
 }
 
-
-
-
 ShowGifs.propTypes = {
-  gifs: React.PropTypes.array.isRequired,
-  addNewImage: React.PropTypes.func.isRequired,
+  gifs: React.PropTypes.array,
+  addNewImage: React.PropTypes.func,
   noButton: React.PropTypes.bool,
   noDeleteButton: React.PropTypes.bool,
-  removeImage: React.PropTypes.func.isRequired,
-  removePic: React.PropTypes.func.isRequired,
+  removeImage: React.PropTypes.func,
+  removePic: React.PropTypes.func,
   userStore: React.PropTypes.object,
   imageStore: React.PropTypes.object
 };
