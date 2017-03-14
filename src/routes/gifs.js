@@ -14,10 +14,10 @@ router.route('/gif')
   .post(function(req, res){
 
     let gif = new Gif();
-
     gif.keyword = req.body.keyword;
     gif.url = req.body.url;
     gif.description = req.body.description;
+    gif.owner = req.body.owner;
 
     gif.save(function(err, gif){
       if(err){

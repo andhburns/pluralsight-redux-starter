@@ -7,11 +7,12 @@ class SoloImageWithButton extends React.Component{
 
     this.addOurImage = this.addOurImage.bind(this);
     this.removeOurImage = this.removeOurImage.bind(this);
+    this.createDeleteButton = this.createDeleteButton.bind(this);
   }
 
   addOurImage(e) {
     e.preventDefault();
-    this.props.imageStore.addNewImage(this.props.img);
+    this.props.imageStore.addToDatabase(this.props.img, this.props.userStore._id);
     this.props.imageStore.removeImage(this.props.img);
   }
 
@@ -19,14 +20,20 @@ class SoloImageWithButton extends React.Component{
     this.props.imageStore.removePic(this.props.img);
   }
 
+  createDeleteButton() {
+    if(this.props.userStore._id == this.props.img.owner) {
+      return (
+        <button onClick={this.removeOurImage} type="submit" className="btn btn-warning">Delete</button>
+      );
+    }
+  }
+
   render()
   {
     let ourButton = (
       <button onClick={this.addOurImage} type="submit" className="btn btn-primary">Add To My List</button>
     );
-    let deleteButton = (
-      <button onClick={this.removeOurImage} type="submit" className="btn btn-warning">Delete</button>
-    );
+    let deleteButton = this.createDeleteButton();
     // console.log(this.props.img.id);
     return(
       <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12" key={this.props.img.name}>
@@ -46,7 +53,8 @@ SoloImageWithButton.propTypes = {
   noDeleteButton: React.PropTypes.bool,
   removeImage: React.PropTypes.func,
   removePic: React.PropTypes.func,
-  imageStore: React.PropTypes.object
+  imageStore: React.PropTypes.object,
+  userStore: React.PropTypes.object
 };
 
-export default inject("imageStore")(observer(SoloImageWithButton));
+export default inject("imageStore", "userStore")(observer(SoloImageWithButton));

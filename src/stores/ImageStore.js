@@ -62,7 +62,8 @@ export default class ImageStore {
       name: image.url,
       keyword: image.keyword,
       url: image.url,
-      description: image.slug
+      description: image.slug,
+      owner: image.owner
     }));
   }
 
@@ -90,7 +91,8 @@ export default class ImageStore {
     this.searchresults = newArray;
   }
 
-  addToDatabase(img){
+  addToDatabase(img, userId){
+    console.log(userId)
     fetch('/gif', {
       method: 'POST',
       headers: {
@@ -101,7 +103,8 @@ export default class ImageStore {
         _id: img._id,
         keyword: img.name,
         url: img.url,
-        description: img.description
+        description: img.description,
+        owner: userId
       })
     }).then(result => result.json()).then(res => {img._id = res._id;})
     .then(this.images.push(img))

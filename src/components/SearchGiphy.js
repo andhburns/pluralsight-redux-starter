@@ -47,7 +47,6 @@ class SearchGiphy extends React.Component{
         tempArray.splice(i,1);
       }
     }
-    console.log(tempArray);
     this.setState({foundImages: tempArray});
   }
 
@@ -64,11 +63,7 @@ class SearchGiphy extends React.Component{
     this.setState({random: newrandom});
   }
 
-  // addNewImage(img) {
-  //   testGifs.push(img);
-  //   this.addToDatabase(img);
-  //   this.setState({images: testGifs});
-  // }
+
 
   addToDatabase(img){
     fetch('/gif', {
