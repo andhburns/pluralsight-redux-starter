@@ -26,6 +26,7 @@ class Login extends React.Component {
   }
 
   loginHandler(e){
+    e.preventDefault();
     this.props.userStore.authenticateUser(this.state);
   }
 

@@ -5,9 +5,35 @@ import SearchGiphy from './SearchGiphy';
 import { Link } from 'react-router';
 import Login from './Login';
 import CreateAccount from './CreateAccount';
+import { observer, inject } from 'mobx-react';
 
-export default class Navigation extends React.Component {
+class Navigation extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.userName = this.userName.bind(this);
+    this.logInLogOut = this.logInLogOut.bind(this);
+  }
+userName() {
+  if(this.props.userStore.loggedIn) {
+    return <li><Link to="">{this.props.userStore.username}</Link></li>;
+  }
+  else {
+    return "";
+  }
+}
+
+logInLogOut() {
+  if(this.props.userStore.loggedIn) {
+    return (<li><Link to="/Logout">Logout</Link></li>);
+  } else {
+    return <li><Link to="/Login">Login</Link></li>;
+  }
+}
+
   render() {
+    let userComponent = this.userName();
+    let logInLogOut = this.logInLogOut();
     return (
       <nav className="navbar navbar-inverse">
         <div className="container-fluid">
@@ -20,10 +46,14 @@ export default class Navigation extends React.Component {
             <li><Link to="/SearchGifs">Search-Gifs</Link></li>
             <li><Link to="/ShowGifs">Show-Gifs</Link></li>
             <li><Link to="/CreateAccount">Create Account</Link></li>
-            <li><Link to="/Login">Login</Link></li>
+            {logInLogOut}
+            {userComponent}
           </ul>
         </div>
       </nav>
   );
   }
 }
+Navigation.propTypes={userStore: React.PropTypes.object};
+
+export default inject("userStore")(observer(Navigation));

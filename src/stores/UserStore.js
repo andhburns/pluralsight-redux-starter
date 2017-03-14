@@ -50,17 +50,17 @@ export default class UserStore {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          name: user.name,
+          name: user.username,
           password: user.password
         })
       })
       .then(result => result.json())
       .then( res => {
+        console.log(res);
         if(res.token){
           this.token = res.token;
-          this.username = user.name;
+          this.username = user.username;
           this.loggedIn = true;
-          this.admin = res.admin;
           this._id = res._id;
         }
         else{
