@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer, inject } from 'mobx-react';
 
 class SoloImageWithButton extends React.Component{
   constructor(){
@@ -14,7 +15,7 @@ class SoloImageWithButton extends React.Component{
   }
 
   removeOurImage() {
-    this.props.removePic(this.props.img);
+    this.props.imageStore.removePic(this.props.img);
   }
 
   render()
@@ -43,7 +44,8 @@ SoloImageWithButton.propTypes = {
   noButton: React.PropTypes.bool,
   noDeleteButton: React.PropTypes.bool,
   removeImage: React.PropTypes.func,
-  removePic: React.PropTypes.func
+  removePic: React.PropTypes.func,
+  imageStore: React.PropTypes.object
 };
 
-export default SoloImageWithButton;
+export default inject("imageStore")(observer(SoloImageWithButton));

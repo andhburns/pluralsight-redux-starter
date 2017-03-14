@@ -14,6 +14,7 @@ import ImageStore from './stores/ImageStore';
 import UserStore from './stores/UserStore';
 import ShowGifsWrapper from './components/ShowGifsWrapper';
 import Welcome from './components/Welcome';
+import Library from './components/Library';
 
 const imageStore = new ImageStore();
 const userStore = new UserStore();
@@ -26,8 +27,10 @@ render((
     <Router history={hashHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={Welcome}/>
-        <Route path="/ShowGifs" component={ShowGifsWrapper}/>
-        <Route path="/SearchGiphy" component={SearchGiphy}/>
+        <Route path="/ShowGifs" component={Library}/>
+        <Route path="/SearchGiphy" component={SearchGiphy}>
+          <Route path="/SearchResults" component={ShowGifs}/>
+        </Route>
         <Route path="/SearchGifs" component={SearchGifs}/>
         <Route path="/CreateAccount" component={CreateAccount}/>
         <Route path="/Login" component={Login}/>

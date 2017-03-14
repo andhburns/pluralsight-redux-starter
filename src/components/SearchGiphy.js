@@ -1,6 +1,10 @@
 import React from 'react';
 import math from 'mathjs';
 import ShowGifs from "./ShowGifs";
+import { observer, inject } from 'mobx-react';
+import { Link } from 'react-router';
+import { LinkContainer } from 'react-router-bootstrap';
+
 
 let testGifs = [];
 
@@ -20,7 +24,7 @@ class SearchGiphy extends React.Component{
     this.handleRandomChange = this.handleRandomChange.bind(this);
     this.removeImage = this.removeImage.bind(this);
     this.addToDatabase = this.addToDatabase.bind(this);
-    this.addNewImage = this.addNewImage.bind(this);
+    // this.addNewImage = this.addNewImage.bind(this);
   }
 
   handleSubmit(e) {
@@ -33,17 +37,13 @@ class SearchGiphy extends React.Component{
     e.preventDefault();
     fetch(`http://api.giphy.com/v1/gifs/search?q=${this.state.keyword}&api_key=dc6zaTOxFJmzC&limit=${this.state.limit}&offset=${this.state.offset}`)
       .then(result => result.json())
-      .then(data => this.setState({
-        foundImages: this.convertToShowGifs(this.state.keyword, data.data)}));
+      .then(data => {
+        this.props.imageStore.searchresults = this.convertToShowGifs(this.state.keyword, data.data);});
+
+        this.props.imageStore.returnSearch(this.state.keyword, data.data);
   }
 
-  convertToShowGifs(keyword, foundImages){
-    return foundImages.map(image => ({
-      name: image.id,
-      url: image.images.original.url,
-      description: keyword + " " + image.slug
-    }));
-  }
+
 
   removeImage(img){
     let tempArray = this.state.foundImages;
@@ -52,6 +52,7 @@ class SearchGiphy extends React.Component{
         tempArray.splice(i,1);
       }
     }
+    console.log(tempArray);
     this.setState({foundImages: tempArray});
   }
 
@@ -68,11 +69,11 @@ class SearchGiphy extends React.Component{
     this.setState({random: newrandom});
   }
 
-  addNewImage(img) {
-    testGifs.push(img);
-    this.addToDatabase(img);
-    this.setState({images: testGifs});
-  }
+  // addNewImage(img) {
+  //   testGifs.push(img);
+  //   this.addToDatabase(img);
+  //   this.setState({images: testGifs});
+  // }
 
   addToDatabase(img){
     fetch('/gif', {
@@ -109,17 +110,20 @@ class SearchGiphy extends React.Component{
               <input onChange={this.handleRandomChange} value={this.state.random} type="checkbox"j id="random"/> Randomize
             </div>
             <button onClick={this.handleSubmit} type="submit" className="btn btn-primary">Submit</button>
+            <Link to ="/SearchResults">TEst</Link>
          </form>
-         <ShowGifs removePic={this.props.removePic} removeImage={this.removeImage} addNewImage={this.addNewImage} gifs={this.state.foundImages} noButton={false} noDeleteButton/>
+         <div>{this.props.children}</div>
        </div>
     );
   }
 }
 
 SearchGiphy.propTypes = {
-  addNewImage: React.PropTypes.func.isRequired,
+  addNewImage: React.PropTypes.func,
   removePic: React.PropTypes.func,
-  addToDatabase: React.PropTypes.func
+  addToDatabase: React.PropTypes.func,
+  imageStore: React.PropTypes.object,
+  children: React.PropTypes.object
 };
 
-export default SearchGiphy;
+export default inject("imageStore")(observer(SearchGiphy));

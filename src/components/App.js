@@ -16,8 +16,6 @@ class App extends React.Component {
 
     this.props.imageStore.fetchLibrary();
 
-    this.removePic = this.removePic.bind(this);
-    this.removeFromDatabase = this.removeFromDatabase.bind(this);
   }
 
 // 1. Move the fetch library function into ImageStore
@@ -33,26 +31,9 @@ class App extends React.Component {
 
 
 
-  removePic(img){
-    // let tempArray = this.state.images;
-    // let newArray = tempArray.filter(x => {
-    //   if(x.name !== img.name){
-    //     return x;
-    //   }
-    // });
-    // this.removeFromDatabase(img);
-    // this.setState({images: newArray});
-  }
 
-  removeFromDatabase(img){
-    fetch('/gif/'+img._id, {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    });
-  }
+
+
 
   render() {
     return (

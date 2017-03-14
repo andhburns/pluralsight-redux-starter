@@ -2,7 +2,7 @@ import React from 'react';
 import SoloImageWithButton from './SoloImageWithButton';
 import { observer, inject } from 'mobx-react';
 
-class ShowGifs extends React.Component {
+class Library extends React.Component {
   constructor() {
     super();
     this.whenLoggedIn = this.whenLoggedIn.bind(this);
@@ -11,18 +11,18 @@ class ShowGifs extends React.Component {
     let images;
     if(this.props.userStore.loggedIn) {
       return (
-        images = this.props.userStore.searchresults.map(function(img) {
+        images = this.props.imageStore.images.map(function(img) {
           return (
             <SoloImageWithButton removePic={this.props.removePic} key={img.name} img={img}
               removeImage={this.props.removeImage} addNewImage={this.props.addNewImage}
-              noButton={false} noDeleteButton={true}/>
+              noButton={true} noDeleteButton={false}/>
           );
         },this)
       );
     }
     else{
       return (
-        images = this.props.userStore.searchresults.map(function(img) {
+        images = this.props.imageStore.images.map(function(img) {
           return (
             <SoloImageWithButton removePic={this.props.removePic} key={img.name} img={img}
               removeImage={this.props.removeImage} addNewImage={this.props.addNewImage}
@@ -46,7 +46,7 @@ class ShowGifs extends React.Component {
 
 
 
-ShowGifs.propTypes = {
+Library.propTypes = {
   gifs: React.PropTypes.array.isRequired,
   addNewImage: React.PropTypes.func.isRequired,
   noButton: React.PropTypes.bool,
@@ -58,4 +58,4 @@ ShowGifs.propTypes = {
 };
 
 
-export default inject("userStore", "imageStore")(observer(ShowGifs));
+export default inject("userStore", "imageStore")(observer(Library));
