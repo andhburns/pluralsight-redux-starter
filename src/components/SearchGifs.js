@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer, inject } from 'mobx-react';
 
 class SearchGifs extends React.Component {
 
@@ -17,7 +18,7 @@ class SearchGifs extends React.Component {
 
   handleNewGif(e) {
     e.preventDefault();
-    this.props.addNewImage(this.state);
+    this.props.imageStore.addToDatabase(this.state, this.props.userStore._id);
   }
 
   handleKeywordChange(e) {
@@ -45,9 +46,7 @@ class SearchGifs extends React.Component {
             <input onChange={this.handleUrlChange} value={this.state.url}type="text" className="form-control" id="url" placeholder="url"/>
           </div>
 
-          <div className="form-group">
-            <input onChange={this.handleDescriptionChange} value={this.state.description} type="text" className="form-control" id="description" placeholder="description"/>
-          </div>
+          
 
           <button onClick={this.handleNewGif} type="submit" className="btn btn-primary">Submit</button>
        </form>
@@ -59,4 +58,4 @@ SearchGifs.propTypes = {
   addNewImage: React.PropTypes.func
 };
 
-export default SearchGifs;
+export default inject("imageStore", "userStore")(observer(SearchGifs));

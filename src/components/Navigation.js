@@ -25,9 +25,25 @@ userName() {
 
 logInLogOut() {
   if(this.props.userStore.loggedIn) {
-    return (<li onClick={this.props.userStore.logUserOut}><Link to="/Logout">Logout</Link></li>);
+    return (
+      <ul className="nav navbar-nav">
+        <li className="active"><a href="#">Home</a></li>
+        <li><Link to="/ShowGifs">Show-Gifs</Link></li>
+        <li><Link to="/SearchGiphy">Search-Giphy</Link></li>
+        <li><Link to="/SearchGifs">Search-Gifs</Link></li>
+        <li><Link to="/CreateAccount">Create Account</Link></li>
+        <li onClick={this.props.userStore.logUserOut}><Link to="/Logout">Logout</Link></li>
+        <li><Link to="">{this.props.userStore.username}</Link></li>
+      </ul>);
   } else {
-    return <li><Link to="/Login">Login</Link></li>;
+    return (
+      <ul className="nav navbar-nav">
+        <li className="active"><a href="#">Home</a></li>
+        <li><Link to="/ShowGifs">Show-Gifs</Link></li>
+        <li><Link to="/CreateAccount">Create Account</Link></li>
+        <li><Link to="/Login">Login</Link></li>;
+      </ul>
+    );
   }
 }
 
@@ -40,15 +56,7 @@ logInLogOut() {
           <div className="navbar-header">
             <a className="navbar-brand" href="#">~ GIPHY SEARCH ~</a>
           </div>
-          <ul className="nav navbar-nav">
-            <li className="active"><a href="#">Home</a></li>
-            <li><Link to="/SearchGiphy">Search-Giphy</Link></li>
-            <li><Link to="/SearchGifs">Search-Gifs</Link></li>
-            <li><Link to="/ShowGifs">Show-Gifs</Link></li>
-            <li><Link to="/CreateAccount">Create Account</Link></li>
             {logInLogOut}
-            {userComponent}
-          </ul>
         </div>
       </nav>
   );
