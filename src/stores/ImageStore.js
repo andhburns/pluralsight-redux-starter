@@ -92,7 +92,7 @@ export default class ImageStore {
   }
 
   addToDatabase(img, userId){
-    console.log(userId)
+    img.owner = userId;
     fetch('/gif', {
       method: 'POST',
       headers: {
@@ -103,7 +103,6 @@ export default class ImageStore {
         _id: img._id,
         keyword: img.name,
         url: img.url,
-        description: img.description,
         owner: userId
       })
     }).then(result => result.json()).then(res => {img._id = res._id;})

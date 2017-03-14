@@ -42,7 +42,6 @@ export default class UserStore {
     }
 
     authenticateUser(user) {
-      console.log(user.username + " " + user.password);
       fetch('/api/authenticate', {
         method: 'POST',
         headers: {
@@ -56,12 +55,12 @@ export default class UserStore {
       })
       .then(result => result.json())
       .then( res => {
-        console.log(res);
         if(res.token){
           this.token = res.token;
           this.username = user.username;
           this.loggedIn = true;
           this._id = res._id;
+          this.admin = res.admin;
         }
         else{
           this.loggedIn = false;

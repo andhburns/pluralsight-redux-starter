@@ -113,7 +113,7 @@ apiRoutes.post('/user', function(req, res) {
 
   user.name = req.body.name;
   user.password = hash.generate(req.body.password);
-  user.admin = req.body.admin;
+  user.admin = false;
 
   user.save(function(err, user){
     if(err){

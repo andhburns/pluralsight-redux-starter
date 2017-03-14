@@ -21,7 +21,7 @@ class SoloImageWithButton extends React.Component{
   }
 
   createDeleteButton() {
-    if(this.props.userStore._id == this.props.img.owner) {
+    if((this.props.userStore._id == this.props.img.owner) || this.props.userStore.admin) {
       return (
         <button onClick={this.removeOurImage} type="submit" className="btn btn-warning">Delete</button>
       );
